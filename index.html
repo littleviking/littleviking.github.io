@@ -9,24 +9,33 @@
     <header>
       <h1>Ten Percent Butts</h1>
     </header>
-    <div class="form-group">
-      <label for="input_text">Input Text</label><br>
-      <textarea class="form-control" id="input_text" style="height:8em;"></textarea>
-    </div>
-    <div class="form-group row">
-      <div class="col-sm-3">
-        <label for="percent">Percent</label>
-        <input class="form-control" type="number" name="percent" id="percent" min="1" max="100" value="10">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <textarea class="form-control" id="input_text" style="height:8em;" placeholder="To be, or not to be..."></textarea>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">
+            <label for="percent">Percent</label>
+            <div class="input-group">
+              <input class="form-control" type="number" name="percent" id="percent" min="1" max="100" placeholder="10">
+              <div class="input-group-append">
+                <div class="input-group-text">%</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-9 text-align-right">
+            <label for="word_bases">Word bases</label>
+            <input class="form-control" type="text" name="word_bases" id="word_bases" value="butt">
+            <small class="form-text text-muted">Enter a comma-separated list of singular nouns.</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <button id="submit" class="btn btn-primary">Add Butts</button>
+        </div>
       </div>
-      <div class="col-sm-9 text-align-right">
-        <label for="word_bases">Word bases</label>
-        <input class="form-control" type="text" name="word_bases" id="word_bases" value="butt">
-        <small class="form-text text-muted">Enter a comma-separated list of singular nouns.</small>
-      </div>
     </div>
-    <div class="form-group">
-      <button id="submit" class="btn btn-primary">Add Butts</button>
-    </div>
+    <p></p>
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Result</h5>
@@ -74,7 +83,7 @@
         };
         this.input_text = this._escapeHtml(input_text);
         this.percent = options.percent || 10;
-        if (options.word_bases) { this.word_bases = options.word_bases; }
+        if (options.word_bases.length > 0) { this.word_bases = options.word_bases; }
       }
 
       parseInput(input_text) {
