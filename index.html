@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-  <div class="container">
+  <div class="container mt-3 mb-4">
     <header>
       <h1>Ten Percent Butts</h1>
     </header>
@@ -14,7 +14,11 @@
         <div class="form-group">
           <textarea class="form-control" id="input_text" style="height:8em;" placeholder="To be, or not to be..."></textarea>
         </div>
-        <div class="form-group row">
+        <div class="form-group">
+          <button id="submit" class="btn btn-primary">Add Butts</button>
+        </div>
+        <a data-toggle="collapse" href="#advanced">Advanced</a>
+        <div class="collapse form-group row" id="advanced">
           <div class="col-sm-3">
             <label for="percent">Percent</label>
             <div class="input-group">
@@ -26,12 +30,9 @@
           </div>
           <div class="col-sm-9 text-align-right">
             <label for="word_bases">Word bases</label>
-            <input class="form-control" type="text" name="word_bases" id="word_bases" value="butt">
+            <input class="form-control" type="text" name="word_bases" id="word_bases" placeholder="butt">
             <small class="form-text text-muted">Enter a comma-separated list of singular nouns.</small>
           </div>
-        </div>
-        <div class="form-group">
-          <button id="submit" class="btn btn-primary">Add Butts</button>
         </div>
       </div>
     </div>
@@ -39,14 +40,14 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Result</h5>
-        <p class="card-text" id="output_text" style="white-space:pre-line;"> </p>
+        <p class="card-text" id="output_text" style="white-space:pre-wrap;"> </p>
       </div>
     </div>
   </div>
 
-  <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
-  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var input_text = document.getElementById('input_text'),
@@ -58,7 +59,7 @@
         e.preventDefault();
         output_text.innerHTML = new TenPB(
           input_text.value,
-          { percent: percent.value, word_bases: word_bases.value.split(',').map(item => item.trim()) }
+          { percent: percent.value, word_bases: (word_bases.length > 0 ? word_bases.value.split(',').map(item => item.trim()) : null) }
         ).execute();
       });
     });
@@ -81,9 +82,9 @@
           "VBG":  ['butting'],  // Verb, gerund or present participle (thinking is fun)
           "VBN":  ['butted'],  // Verb, past participle (a *sunken* ship)
         };
-        this.input_text = this._escapeHtml(input_text);
+        this.input_text = input_text;
         this.percent = options.percent || 10;
-        if (options.word_bases.length > 0) { this.word_bases = options.word_bases; }
+        if (options.word_bases) this.word_bases = options.word_bases;
       }
 
       parseInput(input_text) {
@@ -146,7 +147,7 @@
       }
 
       output(new_text) {
-        return new_text;
+        return this._escapeHtml(new_text);
       }
 
       _fixCapitalization(source, target) {
