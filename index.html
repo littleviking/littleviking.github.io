@@ -60,8 +60,11 @@
       submit.addEventListener('click', function(e) {
         e.preventDefault();
         output_text.innerHTML = new TenPB(
-          input_text.value,
-          { percent: percent.value, word_bases: (word_bases.length > 0 ? word_bases.value.split(',').map(item => item.trim()) : null) }
+          input_text.value || input_text.placeholder,
+          {
+            percent: percent.value || percent.placeholder,
+            word_bases: (word_bases.value.length > 0 ? word_bases.value.split(',').map(item => item.trim()) : null)
+          }
         ).execute();
       });
     });
